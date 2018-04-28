@@ -22,12 +22,12 @@ logger built for speed and happy development.
 
 ### Installation
 
-    go get -u github.com/mgutz/logxi/v1
+    go get -u github.com/AlbinoGeek/logxi/v1
 
 ### Getting Started
 
 ```go
-import "github.com/mgutz/logxi/v1"
+import "github.com/AlbinoGeek/logxi/v1"
 
 // create package variable for Logger interface
 var logger log.Logger
