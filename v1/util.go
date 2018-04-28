@@ -44,10 +44,10 @@ func indexOfNonSpace(s string) int {
 	return -1
 }
 
-var inLogxiPath = filepath.Join("mgutz", "logxi", "v"+strings.Split(Version, ".")[0])
+var inLogxiPath = filepath.Join("AlbinoStoic", "logxi")
 
 func isLogxiCode(filename string) bool {
 	// need to see errors in tests
-	return strings.HasSuffix(filepath.Dir(filename), inLogxiPath) &&
+	return strings.Contains(filepath.Dir(filename), inLogxiPath) &&
 		!strings.HasSuffix(filename, "_test.go")
 }
