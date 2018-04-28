@@ -7,8 +7,8 @@ import (
 
 // ConcurrentWriter is a concurrent safe wrapper around io.Writer
 type ConcurrentWriter struct {
-	writer io.Writer
 	sync.Mutex
+	writer io.Writer
 }
 
 // NewConcurrentWriter crates a new concurrent writer wrapper around existing writer.
