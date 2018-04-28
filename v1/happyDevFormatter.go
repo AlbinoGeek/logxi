@@ -346,7 +346,7 @@ func (hd *HappyDevFormatter) Format(writer io.Writer, level int, msg string, arg
 	hasCallStack := entry[KeyMap.CallStack] != nil
 	// WRN,ERR file, line number context
 
-	if context != "" {
+	if context != "" && context != "\n" {
 		// warnings and traces are single line, space can be optimized
 		if level == LevelTrace || (level == LevelWarn && !hasCallStack) {
 			// gets rid of "in "
