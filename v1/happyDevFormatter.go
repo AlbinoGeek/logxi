@@ -25,9 +25,11 @@ type colorScheme struct {
 	Error string
 }
 
-var indent = "  "
-var maxCol = defaultMaxCol
-var theme *colorScheme
+var (
+	indent = "  "
+	maxCol = defaultMaxCol
+	theme  *colorScheme
+)
 
 func parseKVList(s, separator string) map[string]string {
 	pairs := strings.Split(s, separator)
@@ -36,15 +38,14 @@ func parseKVList(s, separator string) map[string]string {
 	}
 	m := map[string]string{}
 	for _, pair := range pairs {
-		if pair == "" {
-			continue
-		}
-		parts := strings.Split(pair, "=")
-		switch len(parts) {
-		case 1:
-			m[parts[0]] = ""
-		case 2:
-			m[parts[0]] = parts[1]
+		if pair != "" {
+			parts := strings.Split(pair, "=")
+			switch len(parts) {
+			case 1:
+				m[parts[0]] = ""
+			case 2:
+				m[parts[0]] = parts[1]
+			}
 		}
 	}
 	return m
@@ -118,10 +119,9 @@ type HappyDevFormatter struct {
 
 // NewHappyDevFormatter returns a new instance of HappyDevFormatter.
 func NewHappyDevFormatter(name string) *HappyDevFormatter {
-	jf := NewJSONFormatter(name)
 	return &HappyDevFormatter{
 		name:          name,
-		jsonFormatter: jf,
+		jsonFormatter: NewJSONFormatter(name),
 	}
 }
 
@@ -180,8 +180,7 @@ func (hd *HappyDevFormatter) getContext(color string) string {
 		return ""
 	}
 	for _, frame := range frames {
-		context := frame.String(color, theme.Source)
-		if context != "" {
+		if context := frame.String(color, theme.Source); context != "" {
 			return context
 		}
 	}
@@ -204,13 +203,11 @@ func (hd *HappyDevFormatter) getLevelContext(level int, entry map[string]interfa
 	// 	context = hd.getContext(color)
 	// 	context += "\n"
 	case LevelWarn, LevelError, LevelFatal:
-
 		// warnings return an error but if it does not have an error
 		// then print line info only
 		if level == LevelWarn {
 			color = theme.Warn
-			kv := entry[KeyMap.CallStack]
-			if kv == nil {
+			if kv := entry[KeyMap.CallStack]; kv == nil {
 				context = hd.getContext(color)
 				context += "\n"
 				break
