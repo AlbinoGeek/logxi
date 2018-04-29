@@ -33,9 +33,7 @@ func createFormatter(name string, kind string) (Formatter, error) {
 	return formatter, err
 }
 
-func formatFactory(name string, kind string) (Formatter, error) {
-	var formatter Formatter
-	var err error
+func formatFactory(name string, kind string) (formatter Formatter, err error) {
 	switch kind {
 	default:
 		formatter = NewTextFormatter(name)
@@ -46,7 +44,7 @@ func formatFactory(name string, kind string) (Formatter, error) {
 	case FormatJSON:
 		formatter = NewJSONFormatter(name)
 	}
-	return formatter, err
+	return
 }
 
 // RegisterFormatFactory registers a format factory function.
