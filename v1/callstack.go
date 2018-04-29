@@ -60,6 +60,11 @@ func (ci *frameInfo) String(color string, sourceColor string) string {
 	buf := pool.Get()
 	defer pool.Put(buf)
 
+	// skip anything in the logxi package
+	if isLogxiCode(ci.filename) {
+		return ""
+	}
+
 	if disableCallstack {
 		buf.WriteString(color)
 		buf.WriteString(Separator)
@@ -68,11 +73,6 @@ func (ci *frameInfo) String(color string, sourceColor string) string {
 		buf.WriteRune(':')
 		buf.WriteString(strconv.Itoa(ci.lineno))
 		return buf.String()
-	}
-
-	// skip anything in the logxi package
-	if isLogxiCode(ci.filename) {
-		return ""
 	}
 
 	// make path relative to current working directory or home
@@ -200,7 +200,7 @@ func parseDebugStack(stack string, skip int, ignoreRuntime bool) []*frameInfo {
 
 		methodLine := lines[i+1]
 		colon = strings.Index(methodLine, ":")
-		ci.method = strings.Trim(methodLine[0:colon], "\t ")
+		ci.method = strings.Trim(methodLine[:colon], "\t ")
 		frames = append(frames, ci)
 	}
 	return frames
@@ -221,11 +221,15 @@ func parseDebugStack(stack string, skip int, ignoreRuntime bool) []*frameInfo {
 func trimDebugStack(stack string) string {
 	buf := pool.Get()
 	defer pool.Put(buf)
-	lines := strings.Split(stack, "\n")
-	for i := 0; i < len(lines); i += 2 {
-		sourceLine := lines[i]
+
+	// line 0 should always be `goroutine`
+	lines := strings.Split(stack, "\n")[1:]
+
+	for i := 0; i < len(lines)-1; i += 2 {
+		caller := lines[i]
+		sourceLine := strings.TrimLeft(lines[i+1], " \t")
 		if sourceLine == "" {
-			break
+			continue
 		}
 
 		colon := strings.Index(sourceLine, ":")
@@ -239,9 +243,11 @@ func trimDebugStack(stack string) string {
 		if isLogxiCode(filename) {
 			continue
 		}
-		buf.WriteString(sourceLine)
+
+		buf.WriteString(caller)
 		buf.WriteRune('\n')
-		buf.WriteString(lines[i+1])
+		buf.WriteString(indent)
+		buf.WriteString(sourceLine)
 		buf.WriteRune('\n')
 	}
 	return buf.String()
