@@ -1,16 +1,18 @@
-![demo](https://github.com/AlbinoGeek/logxi/raw/master/images/demo.gif)
+## PR WELCOME
 
 # logxi
+
+![demo](https://github.com/AlbinoGeek/logxi/raw/master/images/demo.gif)
 
 log XI is a structured [12-factor app](http://12factor.net/logs)
 logger built for speed and happy development.
 
-*   Simpler. Sane no-configuration defaults out of the box.
+*   Simpler. Configurable with sane defaults out of the box.
 *   Faster. See benchmarks vs logrus and log15.
 *   Structured. Key-value pairs are enforced. Logs JSON in production.
-*   Configurable. Enable/disalbe Loggers and levels via env vars.
-*   Friendlier. Happy, colorful and developer friendly logger in terminal.
-*   Helpul. Traces, warnings and errors are emphasized with file, line
+*   Configurable. Enable/disable Loggers and levels via environment variables.
+*   Friendlier. Happy, colourful and developer friendly logger in terminal.
+*   Helpful. Traces, warnings and errors are emphasized with file, line
     number and callstack.
 *   Efficient. Has level guards to avoid cost of building complex arguments.
 
@@ -66,7 +68,7 @@ logxi defaults to showing warnings and above. To view all logs
 
 This logger package
 
-*   Is fast in production environment
+*   Is fast in a production environment
 
     A logger should be efficient and minimize performance tax.
     logxi encodes JSON 2X faster than logrus and log15 with primitive types.
@@ -85,7 +87,7 @@ This logger package
         BenchmarkLog15Complex    20000    92880 ns/op  13172 B/op   311 allocs/op
 
 *   Is developer friendly in the terminal. The HappyDevFormatter
-    is colorful, prints file and line numbers for traces, warnings
+    is colourful, prints file and line numbers for traces, warnings
     and errors. Arguments are printed in the order they are coded.
     Errors print the call stack.
 
@@ -93,7 +95,7 @@ This logger package
     and delegates to JSONFormatter internally.
 
 *   Logs machine parsable output in production environments.
-    The default formatter for non terminals is `JSONFormatter`.
+    The default formatter for non-terminals is `JSONFormatter`.
 
     `TextFormatter` may also be used which is MUCH faster than
     JSON but there is no guarantee it can be easily parsed.
@@ -141,9 +143,9 @@ This logger package
     return log.Error(msg, "err", err)   //=> err
     ```
 
-*   Supports Color Schemes (256 colors)
+*   Supports Colour Schemes (256 colors)
 
-    `log.New` creates a logger that supports color schemes
+    `log.New` creates a logger that supports colour schemes
 
         logger := log.New("mylog")
 
@@ -175,7 +177,7 @@ By default logxi logs entries whose level is `LevelWarn` or above when
 using a terminal. For non-terminals, entries with level `LevelError` and
 above are logged.
 
-To quickly see all entries use short form
+To quickly see all entries, use short form
 
     # enable all, disable log named foo
     LOGXI=*,-foo yourapp
@@ -218,9 +220,9 @@ The "happy" formatter has more options
     to see only file:lineno. Default is 2.
 
 
-### Color Schemes
+### Colour Schemes
 
-The color scheme may be set with `LOGXI_COLORS` environment variable. For
+The colour scheme may be set with the `LOGXI_COLORS` environment variable. For
 example, the default dark scheme is emulated like this
 
     # on non-Windows, see Windows support below
@@ -236,24 +238,24 @@ background on terminal.
 
 Keys
 
-*   \*  - default color
-*   TRC - trace color
-*   DBG - debug color
-*   WRN - warn color
-*   INF - info color
-*   ERR - error color
-*   message - message color
-*   key - key color
-*   value - value color unless WRN or ERR
-*   misc - time and log name color
-*   source - source context color (excluding error line)
+*   \*  - default colour
+*   TRC - trace colour
+*   DBG - debug colour
+*   WRN - warn colour
+*   INF - info colour
+*   ERR - error colour
+*   message - message colour
+*   key - key colour
+*   value - value colour unless WRN or ERR
+*   misc - time and log name colour
+*   source - source context colour (excluding error line)
 
 #### Windows
 
 Use [ConEmu-Maximus5](https://github.com/Maximus5/ConEmu).
 Read this page about [256 colors](https://code.google.com/p/conemu-maximus5/wiki/Xterm256Colors).
 
-Colors in PowerShell and Command Prompt _work_ but not very pretty.
+Colours in PowerShell and Command Prompt _work_ but are not very pretty.
 
 ## Extending
 
